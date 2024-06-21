@@ -21,7 +21,6 @@ class Ollama_Chat():
             'role': 'system',
             'content': ""
         }
-        # ollama instructions
         self.ins_dict = {
             "llama3": (
                 "You are a compassionate and empathetic AI therapist. Your role is to provide psychological support, "
@@ -39,10 +38,9 @@ class Ollama_Chat():
                 "回答的時候盡量不要超過三句話。"
             )
         }
-
         self.history.append(self.instructions)
 
-    def send_message(self, message, model='llama3'):
+    def send_message(self, message, model='llama3'): # model='module_v7'
         print(colored(f"Model: {model}", 'green',bright=True))
         self.history[0]["content"] = self.ins_dict[model]
         message_dict = {
@@ -50,7 +48,6 @@ class Ollama_Chat():
             'content': message
         }
         self.history.append(message_dict)
-        #module_v7
         sys_response = ollama.chat(
             model=model,
             messages=self.history
