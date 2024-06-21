@@ -1,5 +1,4 @@
 from web_ui.Chat_Bot import ChatBot
-# from web_ui.Bark import Bark
 from web_ui.Tab1 import Tab1
 from web_ui.Tab2 import Tab2
 import gradio as gr
@@ -11,7 +10,6 @@ def main():
     tab1 = Tab1()
     tab2 = Tab2()
     chatbox = ChatBot(tab1=tab1)
-    # bark = Bark()
 
     with gr.Blocks(theme='Tshackelton/IBMPlex-DenseReadable', title="HealthChat") as healthchat:
         gr.Markdown("""
@@ -25,18 +23,18 @@ def main():
                 <h1 style='margin-bottom: 0.5rem;'>HealthChat: A Conversational AI Solution</h1>
             </div>
         """)
-                # <h5 style='margin-top: 0.5rem;'>Made by Yu-Pu Hsu</h5>
+        
         with gr.Row():
             with gr.Column(scale=1):
                 with gr.Row():
-                #     model = gr.Dropdown(label="Choose Model", value="module_v7", choices=["module_v7", "llama3"])
+                    # model = gr.Dropdown(label="Choose Model", value="module_v7", choices=["module_v7", "llama3"])
                     gender = gr.Dropdown(label="Chatbot gender", value="male", choices=["male", "female"])
+                
                 # tab1
                 with gr.Tab(label="Choose Voice"):
                     with gr.Row():
                         refresh_button = gr.Button("Refresh")
                     with gr.Row():
-                        # star_rail_pt = gr.Dropdown(label="Speakers from Star Rail !", choices=StarRail)
                         input_pt = gr.FileExplorer(label="Voice's checkpoint", root="./DDSP-SVC/exp", glob="**/*.pt*", file_count="single")
                     with gr.Row():
                         with gr.Column():
@@ -65,7 +63,6 @@ def main():
                         gr.Markdown("Each wav file takes more than 2 seconds, and it is recommended to upload 20 files.")
                     with gr.Row():
                         input_wav = gr.File(label="Upload .wav file to train", file_count="multiple")
-                        # input_wav = gr.FileExplorer(label="Your voice's .wav file ", root="D:\Workspace\模組\dataset", glob="**/*.wav*")
                     with gr.Row():
                         with gr.Column():
                             dir_path = gr.Text(label="Your voice's name")
@@ -76,7 +73,6 @@ def main():
                         stop_button = gr.Button("Stop learning")
                     with gr.Row():
                         run_output = gr.Text(label="Learning result")
-                        # error = gr.Text(label="Error")
 
                     learn_button.click(
                         tab2.learn_voice,
@@ -85,6 +81,7 @@ def main():
                     )
                     stop_button.click(tab2.stop_training)
                 
+            # chatbot
             with gr.Column(scale=3):
                 with gr.Row(equal_height=True):
                     with gr.Column():
@@ -103,13 +100,19 @@ def main():
                     audio_box = gr.Audio(label="Record", sources="microphone", type="numpy", format="wav", waveform_options=wo, visible=False)
                     output_audio = gr.Audio(label="Generated Audio", type='filepath', autoplay=True, visible=False)
                 
-                # if input is text
+                chatbot.like(chatbox.print_like_dislike, None, None)
+                restart.click(
+                    fn=chatbox.clear_history,
+                    inputs=None,
+                    outputs=[chatbot, msg, output_audio]
+                )
+                
+                # Input with text
                 chat_msg = msg.submit(chatbox.add_message, inputs=[msg], outputs=[chatbot, msg])
                 bot_msg = chat_msg.then(chatbox.bot_response, inputs=[chatbot, input_pt, keychange, speedup, gender], outputs=[chatbot, output_audio])
-                # bot_msg.then(lambda replies: bark.generate_audio(replies[-1][1]), inputs=[chatbot], outputs=[output_audio]).\
                 bot_msg.then(lambda: gr.MultimodalTextbox(interactive=True), None, [msg])
 
-                # if input is audio(button)
+                # Input with button
                 audio_btn.click(
                     fn=chatbox.action, 
                     inputs=[audio_btn, audio_box], 
@@ -123,14 +126,6 @@ def main():
                     chatbox.bot_response, 
                     inputs=[chatbot, input_pt, keychange, speedup, gender], 
                     outputs=[chatbot, output_audio]
-                )
-                # then(lambda replies: bark.generate_audio(replies[-1][1]), inputs=[chatbot], outputs=[output_audio])
-
-                chatbot.like(chatbox.print_like_dislike, None, None)
-                restart.click(
-                    fn=chatbox.clear_history,
-                    inputs=None,
-                    outputs=[chatbot, msg, output_audio]
                 )
 
     healthchat.queue().launch(share=True)
