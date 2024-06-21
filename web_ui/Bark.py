@@ -1,7 +1,6 @@
 from bark.generation import generate_text_semantic, preload_models
-from bark import SAMPLE_RATE
 from bark.api import semantic_to_waveform
-from IPython.display import Audio
+from bark import SAMPLE_RATE
 from opencc import OpenCC
 import soundfile as sf
 import numpy as np
