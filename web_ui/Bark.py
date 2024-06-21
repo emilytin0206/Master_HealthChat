@@ -1,16 +1,13 @@
 from bark.generation import generate_text_semantic, preload_models
-from bark import generate_audio, SAMPLE_RATE
+from bark import SAMPLE_RATE
 from bark.api import semantic_to_waveform
+from IPython.display import Audio
 from opencc import OpenCC
+import soundfile as sf
 import numpy as np
 import langid
-import emoji
 import nltk
-import wave
 import re
-from IPython.display import Audio
-import soundfile as sf
-
 
 class Bark():
     def __init__(self):
@@ -20,14 +17,11 @@ class Bark():
         self.stop_event = False
     
     def contains_traditional_chinese(self, text):
-        # 檢測是否包含繁體中文（常見的）
         traditional_characters_pattern = re.compile(
             r'[㐀-䶵⼀-⿕一-龥]'
         )
         return bool(traditional_characters_pattern.search(text))
     
-    # def remove_emoji(self, text):
-    #     return emoji.demojize(text, delimiters=("",""))
     def remove_emoji(self, text):
         emoji_pattern = re.compile(
             "["
@@ -43,7 +37,6 @@ class Bark():
         return emoji_pattern.sub(r'', text)
     
     def split_chinese_sentences(self, text):
-        # 用中文的標點符號切分句子
         sentences = re.split(r'(?<=[。！？])', text)
         return [s.strip() for s in sentences if s.strip()]
     
@@ -98,15 +91,13 @@ class Bark():
                 sentence,
                 history_prompt=speaker,
                 temp=GEN_TEMP,
-                min_eos_p=0.05,  # this controls how likely the generation is to end
+                min_eos_p=0.05,
             )
 
             audio_array = semantic_to_waveform(semantic_tokens, history_prompt=speaker,)
             pieces += [audio_array, silence.copy()]
         audio_output = np.concatenate(pieces)
-
-        Audio(audio_output, rate=SAMPLE_RATE)
-
+        
         full_audio = np.concatenate(pieces)
         sf.write(f'change_voice/voice_example_{gender}.wav', full_audio, SAMPLE_RATE)
         
