@@ -108,6 +108,6 @@ class Bark():
         Audio(audio_output, rate=SAMPLE_RATE)
 
         full_audio = np.concatenate(pieces)
-        sf.write(f'/root/yupu/AImodule/change_voice/voice_example_{gender}.wav', full_audio, SAMPLE_RATE)
+        sf.write(f'change_voice/voice_example_{gender}.wav', full_audio, SAMPLE_RATE)
         
         return (SAMPLE_RATE, audio_output)
