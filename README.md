@@ -8,3 +8,8 @@ cd taiwan_llama/module
 git Ifs install
 git clone https://huggingface.co/huangyt/module_v7
 ```
+
+### Run
+```
+python launch.py
+```
