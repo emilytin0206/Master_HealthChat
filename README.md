@@ -13,3 +13,6 @@ git clone https://huggingface.co/huangyt/module_v7
 ```
 python launch.py
 ```
+
+### Demo
+![image](https://github.com/user-attachments/assets/7f722bae-847b-458c-8097-08fbb1ae9b35)
