@@ -1,8 +1,5 @@
 # HealthChat
-Our project aims to develop a locally-operated multilingual conversational AI that integrates several advanced technologies to
-enhance mental health support. These include speech-to-text (STT), Chinese large language models (LLM), and text-to-speech
-(TTS). Additionally, we have incorporated Differentiable Digital Signal Processing - Singing Voice Conversion (DDSP-SVC)
-technology, enabling the AI to transform voice characteristics and respond in a comforting, familiar voice. Our model, finetuned on chinese psychotherapy datasets, can provide personalized counseling services
+Our project aims to develop a locally-operated multilingual conversational AI that integrates several advanced technologies to enhance mental health support. These include speech-to-text (STT), Chinese large language models (LLM), and text-to-speech (TTS). Additionally, we have incorporated Differentiable Digital Signal Processing - Singing Voice Conversion (DDSP-SVC) technology, enabling the AI to transform voice characteristics and respond in a comforting, familiar voice. Our model, finetuned on chinese psychotherapy datasets, can provide personalized counseling services
 
 1. Speech Recording or Text Input: Users can record their speech via the web interface or input text through the message box.
 2. Speech-to-Text: Whisper converts the recorded speech to text.
